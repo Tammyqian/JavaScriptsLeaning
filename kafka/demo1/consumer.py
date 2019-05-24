@@ -2,13 +2,13 @@
 import json
 from kafka import KafkaProducer
 
-producer = KafkaProducer(bootstrap_servers='xxxx:x')
+producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 msg_dict = {
     "sleep_time": 10,
     "db_config": {
         "database": "test_1",
-        "host": "xxxx",
+        "host": "localhost",
         "user": "root",
         "password": "root"
     },
@@ -18,11 +18,3 @@ msg_dict = {
 msg = json.dumps(msg_dict)
 producer.send('test_rhj', msg, partition=0)
 producer.close()
---------------------------------------------------------------------------------
-#下面是消费者的简单代码：
-from kafka import KafkaConsumer
-
-consumer = KafkaConsumer('test_rhj', bootstrap_servers=['xxxx:x'])
-for msg in consumer:
-    recv = "%s:%d:%d: key=%s value=%s" % (msg.topic, msg.partition, msg.offset, msg.key, msg.value)
-    print(recv)
